@@ -6,7 +6,7 @@ public static class GlobalVariables
 {
     public static Phases currentPhase = Phases.Closing;
 
-    public static int recipeIngredients[10][8] = {
+    public static int [,] recipeIngredients = {
         //Fruit tart, Croissant, Chocolate Croissant, Berry Envelope, Berry Strudel, Eclair, Palmier, Cinnamon Roll, Chocolate Chip Cookies, Vanilla Cake
         {1, 0, 0, 1, 1, 0, 0, 0, 0, 0}, //Mixed Berries
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 0}, //Butter
