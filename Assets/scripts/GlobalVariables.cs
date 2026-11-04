@@ -4,11 +4,11 @@ public enum Ingredients {MixedBerries, Butter, Flour, Chocolate, Eggs, Milk, Cin
 public enum Recipes {FruitTart, Croissant, ChocolateCroissant, BerryEnvelope, BerryStrudel, Eclair, Palmier, CinnamonRoll, ChocolateChipCookies, VanillaCake}
 public class GlobalVariables : MonoBehaviour
 {
-    public static Phases currentPhase = Phases.TakingOrders;
+    public static Phases currentPhase;
 
     void Start()
     {
-        currentPhase = Phases.TakingOrders;
+        currentPhase = Phases.Break;
     }
 
     public int [,] recipeIngredients = {
