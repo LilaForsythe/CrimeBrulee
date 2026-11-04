@@ -9,17 +9,17 @@ EditorBuildSettings:
     path: Assets/Scenes/startScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
-    path: Assets/Scenes/groceryStoreScene.unity
-    guid: da36be7f352e9124594a6a439dc6b564
+    path: Assets/Scenes/pastryShopScene.unity
+    guid: 17ebfb50d780c2f48832be8d269cf0cd
   - enabled: 1
     path: Assets/Scenes/KitchenScene.unity
     guid: 980946b9c7149914faf01beed7a6e331
   - enabled: 1
-    path: Assets/Scenes/pastryShopScene.unity
-    guid: 17ebfb50d780c2f48832be8d269cf0cd
-  - enabled: 1
     path: Assets/Scenes/PlayerShopScene.unity
     guid: 18831d86f8de5d44c967f1dcc75d841e
+  - enabled: 1
+    path: Assets/Scenes/groceryStoreScene.unity
+    guid: da36be7f352e9124594a6a439dc6b564
   - enabled: 1
     path: Assets/Scenes/SettingsScene.unity
     guid: b45ec2866969a2a4c906b7bc11de2d93
