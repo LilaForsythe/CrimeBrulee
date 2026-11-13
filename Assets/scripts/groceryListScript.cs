@@ -3,61 +3,70 @@ using TMPro;
 
 public class groceryListScript : MonoBehaviour
 {
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
     public TextMeshProUGUI groceryListText;
 
-    class Ingredient
-    {
-        public string type;
-        public int valueNeeded;
-        public int valueOwned;
-         
-        public Ingredient(string type, int valueNeeded, int valueOwned)
-        {
-            this.type = type;
-            this.valueNeeded = valueNeeded;
-            this.valueOwned = valueOwned;
-        }
-       
-    }
-    private Ingredient ingredient1;
-    private Ingredient ingredient2;
-    private Ingredient ingredient3;
-    private Ingredient ingredient4;
+   
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
-
         if (groceryListText == null)
         {
             groceryListText = GetComponent<TextMeshProUGUI>();
         }
-
-        ingredient1 = new Ingredient("Tomatoes", 5, 0);
-        ingredient2 = new Ingredient("Onions", 3, 1);
-        UpdateGroceryListDisplay(); // Refresh the text on the screen!
-        }
+        
+        UpdateGroceryListDisplay();
+    }
 
     // Update is called once per frame
     void Update()
     {
-       
+        
     }
+    class Ingredient
+    {
+        public string mName;
+        public int mValNeeded;
+        public int mValOwned;
 
+        public Ingredient(string name, int valOwned, int valNeeded)
+        {
+            mName = name;
+            mValNeeded = valNeeded;
+            mValOwned = valOwned;
+        }
+
+
+    }
+    private Ingredient ingredient1 = new Ingredient("Flour", 4, 32);
+    private Ingredient ingredient2 = new Ingredient("Sugar", 3, 12);
+    private Ingredient ingredient3;
+
+   
     public void UpdateGroceryListDisplay()
     {
-        if (groceryListText != null)
-        {
-            groceryListText.text = "Grocery List: \n"
-                + ingredient1.type + " " + ingredient1.valueOwned + " / " + ingredient1.valueNeeded + "\n"
-                + ingredient2.type + " " + ingredient2.valueOwned + " / " + ingredient2.valueNeeded;
+        if (groceryListText == null) { 
+            groceryListText= GetComponent<TextMeshProUGUI>();
         }
+        if (groceryListText != null) {
+            groceryListText.text = "Grocery List: \n"
+                + ingredient1.mName + " " + ingredient1.mValOwned + " / " + ingredient1.mValNeeded + "\n"
+                + ingredient2.mName + " " + ingredient2.mValOwned + " / " + ingredient2.mValNeeded + "\n";
+                }
     }
 
-    public void collectTomato() //change the function to be able to collect any ingredient, not just tomatoes
+    public void ingredientCollected(string ingCollected)
     {
-        ingredient1.valueOwned++; // Increase the owned count
-        UpdateGroceryListDisplay(); // Refresh the text on the screen!
+        gameManager manager = FindAnyObjectByType<gameManager>();
+        ingredient1.mValOwned += 1;
+
+        if (manager != null)
+        {
+            manager.totalCollectibles -= 1;
+        }
+
+        UpdateGroceryListDisplay();
+        //spawn a new ingredient
     }
 }
-

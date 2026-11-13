@@ -5,34 +5,29 @@ using UnityEngine.UI;
 
 public class gameManager : MonoBehaviour
 {
+    [SerializeField] public int totalCollectibles = 5;
     public TextMeshProUGUI timerText;
-    [SerializeField] private Slider clockSlider; // create a slider variable to hold the reference to the slider component
-    //Global Variables
-    [SerializeField] private int totaltime = 10;
-    [SerializeField] private int timeRemaining;
+    [SerializeField] private Slider clockSlider;
+    [SerializeField] private int totalTime = 10;
+    private int timeRemaining;
 
     private int ingredient1Count;
-    private int ingredient2Count;
-    private int ingredient3Count;
-
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        timeRemaining = totalTime;
+        if (clockSlider == null)
+        {
+            clockSlider = GetComponent<Slider>();
+        }
+        if (clockSlider != null)
+        {
+            clockSlider.maxValue = totalTime;
+            clockSlider.value = timeRemaining;
+        }
         
-        if (clockSlider != null) // check if the slider variable is null
-        {
-            clockSlider.maxValue = totaltime; // set the maximum value of the slider to the total time
-            clockSlider.value = totaltime; // set the current value of the slider to the total time
-        }
-        if(clockSlider == null)
-        {
-            clockSlider = GetComponent<Slider>(); // get the slider component from the game object and assign it to the variable
-
-        }
-        timeRemaining = totaltime; // set the time remaining to the total time
+        
         StartCoroutine(Countdown());
-
     }
 
     // Update is called once per frame
@@ -41,25 +36,30 @@ public class gameManager : MonoBehaviour
         clockMove();
     }
 
+
     IEnumerator Countdown()
     {
-        while (timeRemaining > 0)
+        if (timerText == null)
+        {
+            timerText = GetComponent<TextMeshProUGUI>();
+        }
+        while(timeRemaining > 0 && timerText != null)
         {
             timeRemaining--;
-            timerText.text = "Time remaining: " + timeRemaining;
+            timerText.text = "Time Remaining: " + timeRemaining;
             yield return new WaitForSeconds(1);
         }
     }
 
     public void clockMove()
     {
-        if (clockSlider != null) // check if the slider variable is null
-        {
-            clockSlider = GetComponent<Slider>(); // get the slider component from the game object and assign it to the variable
+        if (clockSlider == null) {
+            clockSlider = GetComponent<Slider>();
         }
-        if (clockSlider != null)
-        {
+        if (clockSlider != null) {
             clockSlider.value = timeRemaining;
         }
     }
+    
+
 }
