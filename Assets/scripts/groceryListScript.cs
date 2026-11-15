@@ -58,7 +58,7 @@ public class groceryListScript : MonoBehaviour
 
     public void ingredientCollected(string ingCollected)
     {
-        gameManager manager = FindAnyObjectByType<gameManager>();
+        GameManager manager = FindAnyObjectByType<GameManager>();
         ingredient1.mValOwned += 1;
 
         if (manager != null)

@@ -34,8 +34,8 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        phaseText.text = "Current Phase: " + GlobalVariables.currentPhase.ToString();
         clockMove();
+        phaseText.text = "Current Phase: " + GlobalVariables.currentPhase.ToString();
     }
 
 

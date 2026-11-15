@@ -928,12 +928,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 958637863}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12602065af16dea45848e95ce7f63d06, type: 3}
+  m_Script: {fileID: 11500000, guid: 86118c107a888894c9d72265cc2e1f83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
   totalCollectibles: 5
-  timerText: {fileID: 0}
-  clockSlider: {fileID: 0}
+  timerText: {fileID: 210495945}
+  clockSlider: {fileID: 332849366}
   totalTime: 10
 --- !u!4 &958637865
 Transform:
