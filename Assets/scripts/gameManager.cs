@@ -7,17 +7,10 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] public int totalCollectibles = 5;
     public TextMeshProUGUI timerText;
-<<<<<<< HEAD
     public TextMeshProUGUI phaseText;
-    [SerializeField] private Slider clockSlider; // create a slider variable to hold the reference to the slider component
-    //Global Variables
-    [SerializeField] private int totaltime = 10;
-    [SerializeField] private int timeRemaining;
-=======
     [SerializeField] private Slider clockSlider;
     [SerializeField] private int totalTime = 10;
     private int timeRemaining;
->>>>>>> KobePadillaGroceryStore
 
     private int ingredient1Count;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
