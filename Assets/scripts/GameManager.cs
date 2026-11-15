@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public TextMeshProUGUI timerText;
+    public TextMeshProUGUI phaseText;
     [SerializeField] private Slider clockSlider; // create a slider variable to hold the reference to the slider component
     //Global Variables
     [SerializeField] private int totaltime = 10;
