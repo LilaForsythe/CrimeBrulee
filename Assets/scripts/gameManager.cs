@@ -3,7 +3,7 @@ using TMPro;
 using System.Collections;
 using UnityEngine.UI;
 
-public class gameManager : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
     public TextMeshProUGUI timerText;
     [SerializeField] private Slider clockSlider; // create a slider variable to hold the reference to the slider component
@@ -38,6 +38,7 @@ public class gameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        phaseText.text = "Current Phase: " + GlobalVariables.currentPhase.ToString();
         clockMove();
     }
 
