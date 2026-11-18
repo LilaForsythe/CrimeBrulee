@@ -28,7 +28,7 @@ public static class IngredientStock
 
         foreach (Order order in OrderBook.acceptedOrders)
         {
-            if (!order.baked)
+            if (order.status == OrderStatus.Waiting)
             {
                 total += AmountPerRecipe(order.recipe, ingredient);
             }
@@ -106,6 +106,15 @@ public static class IngredientStock
             owned[(int)ingredient] -= AmountPerRecipe(recipe, ingredient);
         }
         return true;
+    }
+
+    //gives back ingredients if scene changes mid bake
+    public static void Refund(Recipes recipe)
+    {
+        foreach (Ingredients ingredient in System.Enum.GetValues(typeof(Ingredients)))
+        {
+            owned[(int)ingredient] += AmountPerRecipe(recipe, ingredient);
+        }
     }
 
     //displays the shopping list text

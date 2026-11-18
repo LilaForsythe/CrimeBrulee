@@ -23,7 +23,7 @@ public class GlobalVariables : MonoBehaviour
         {0, 0, 1, 0, 0, 1, 0, 0, 1, 0}, //Chocolate
         {0, 0, 0, 1, 0, 1, 0, 1, 1, 1}, //Eggs
         {0, 0, 0, 1, 0, 1, 0, 1, 0, 1}, //Milk
-        {0, 0, 0, 0, 1, 0, 0, 1, 1, 0}, //Cinnamon
+        {0, 0, 0, 0, 1, 0, 0, 1, 0, 0}, //Cinnamon
         {0, 0, 0, 0, 1, 0, 1, 1, 0, 1}  //Sugar
     };
 }

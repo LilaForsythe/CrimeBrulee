@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+public enum OrderStatus {Waiting, InProgress, Ready}
+
 [System.Serializable]
 public class Order
 {
@@ -8,13 +10,13 @@ public class Order
     public int customerLook;
 
     public Recipes recipe;
-    public bool baked;
+    public OrderStatus status;
 
     public Order(int customerLook, Recipes recipe)
     {
         this.customerLook = customerLook;
         this.recipe = recipe;
-        this.baked = false;
+        this.status = OrderStatus.Waiting;
     }
 }
 
@@ -30,13 +32,13 @@ public static class OrderBook
         acceptedOrders = new List<Order>();
     }
 
-    //orders that havent been baked
-    public static List<Order> UnbakedOrders()
+
+    public static List<Order> OrdersWithStatus(OrderStatus status)
     {
         List<Order> result = new List<Order>();
-        foreach (Order order in acceptedOrders)
+        foreach(Order order in acceptedOrders)
         {
-            if (!order.baked)
+            if(order.status == status)
             {
                 result.Add(order);
             }
@@ -44,10 +46,11 @@ public static class OrderBook
         return result;
     }
 
-    //the kitchen calls this to indicate that an order is being baked
-    public static bool BakeOrder(Order order)
+
+    //starts the order and uses up the ingredients
+    public static bool StartOrder(Order order)
     {
-        if (order == null || order.baked || !acceptedOrders.Contains(order))
+        if (order == null || order.status != OrderStatus.Waiting || !acceptedOrders.Contains(order))
         {
             return false;
         }
@@ -55,8 +58,26 @@ public static class OrderBook
         {
             return false;
         }
-        order.baked = true;
+        order.status = OrderStatus.InProgress;
         return true;
     }
 
+    //changing the status to reeady once it is taken out of the oven
+    public static void FinishOrder(Order order)
+    {
+        if (order != null && order.status == OrderStatus.InProgress)
+        {
+            order.status = OrderStatus.Ready;
+        }
+    }
+
+    //if the player changes scenes mid bake
+    public static void CancelOrder(Order order)
+    {
+        if (order != null && order.status == OrderStatus.InProgress)
+        {
+            IngredientStock.Refund(order.recipe);
+            order.status = OrderStatus.Waiting;
+        }
+    }
 }
