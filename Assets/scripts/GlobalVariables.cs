@@ -6,10 +6,14 @@ public class GlobalVariables : MonoBehaviour
 {
     public static Phases currentPhase;
 
-    void Start()
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    static void ResetOnGameStart()
     {
         currentPhase = Phases.Break;
+        Debug.Log("Phase reset to Break");
     }
+    
 
     public int [,] recipeIngredients = {
         //Fruit tart, Croissant, Chocolate Croissant, Berry Envelope, Berry Strudel, Eclair, Palmier, Cinnamon Roll, Chocolate Chip Cookies, Vanilla Cake

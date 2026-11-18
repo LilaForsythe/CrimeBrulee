@@ -34,7 +34,10 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        clockMove();
+        if(GlobalVariables.currentPhase == Phases.Groceries)
+        {
+            clockMove();
+        }
         phaseText.text = "Current Phase: " + GlobalVariables.currentPhase.ToString();
     }
 
