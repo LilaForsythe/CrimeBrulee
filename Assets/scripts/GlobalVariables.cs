@@ -15,7 +15,7 @@ public class GlobalVariables : MonoBehaviour
     }
     
 
-    public int [,] recipeIngredients = {
+    public static readonly int[,] recipeIngredients = {
         //Fruit tart, Croissant, Chocolate Croissant, Berry Envelope, Berry Strudel, Eclair, Palmier, Cinnamon Roll, Chocolate Chip Cookies, Vanilla Cake
         {1, 0, 0, 1, 1, 0, 0, 0, 0, 0}, //Mixed Berries
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 0}, //Butter

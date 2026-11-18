@@ -19,8 +19,9 @@ public class TriggerGroceryStore : MonoBehaviour
     {
         if (GlobalVariables.currentPhase == Phases.Closing)
         {
-           GlobalVariables.currentPhase = Phases.Groceries;
-           SceneManager.LoadScene("groceryStoreScene");
+            IngredientStock.ClearAll();
+            GlobalVariables.currentPhase = Phases.Groceries;
+            SceneManager.LoadScene("groceryStoreScene");
         }
     }
 }
