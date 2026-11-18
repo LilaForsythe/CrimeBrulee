@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Register : MonoBehaviour
 {
+    //public GlobalVariables globalVariables;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -14,8 +15,9 @@ public class Register : MonoBehaviour
         
     }
 
-    void OnMouseDown()
+    public void OnMouseDown()
     {
+        Debug.Log("Clicking on the register");
         switch((int)(GlobalVariables.currentPhase))
         {
             case 1: GlobalVariables.currentPhase = Phases.Serving;
@@ -31,5 +33,7 @@ public class Register : MonoBehaviour
             //stop any continous taking orders actions
                 break;
         }
+
+        Debug.Log("Current Phase: " + GlobalVariables.currentPhase.ToString());
     }
 }
