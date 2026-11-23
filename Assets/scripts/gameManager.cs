@@ -38,7 +38,10 @@ public class GameManager : MonoBehaviour
         {
             clockMove();
         }
-        phaseText.text = "Current Phase: " + GlobalVariables.currentPhase.ToString();
+        else
+        {
+            phaseText.text = "Current Phase: " + GlobalVariables.currentPhase.ToString();
+        }
     }
 
 
