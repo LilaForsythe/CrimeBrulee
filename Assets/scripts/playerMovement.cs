@@ -9,7 +9,7 @@ public class playerMovement : MonoBehaviour
     float movementX;
     float movementY;
     bool isMovingRight;
-    [SerializeField] int speed = 1;
+    int speed = GlobalVariables.playerSpeed;
 
     // Start is called once before the first execution of =Update after the MonoBehaviour is created
     void Start()

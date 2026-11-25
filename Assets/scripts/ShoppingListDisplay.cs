@@ -5,6 +5,14 @@ public class ShoppingListDisplay : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI groceryListText;
 
+    void Start()
+    {
+        if (groceryListText == null)
+        {
+            groceryListText = GetComponent<TextMeshProUGUI>();
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
