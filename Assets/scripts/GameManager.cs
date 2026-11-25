@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] public int totalCollectibles = 5;
     public TextMeshProUGUI timerText;
     public TextMeshProUGUI phaseText;
+    [SerializeField] private TextMeshProUGUI dayText;
+    [SerializeField] private TextMeshProUGUI moneyText;
     [SerializeField] private Slider clockSlider;
     [SerializeField] private int totalTime = 10;
     private int timeRemaining;
@@ -40,7 +42,26 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            phaseText.text = "Current Phase: " + GlobalVariables.currentPhase.ToString();
+            if(phaseText != null)
+            {
+                phaseText.text = "Current Phase: " + GlobalVariables.currentPhase.ToString();
+            }
+            if (dayText != null)
+            {
+                int daysLeft = GlobalVariables.DaysUntilRent();
+                if (daysLeft == 1)
+                {
+                    dayText.text = "Day " + GlobalVariables.day + " : Rent due tonight!";
+                }
+                else
+                {
+                    dayText.text = "Day " + GlobalVariables.day + " : Rent due in " + daysLeft + " days";
+                }
+            }
+            if (moneyText != null)
+            {
+                moneyText.text = "Gold: " + GlobalVariables.money + " / " + GlobalVariables.RentDue();
+            }
         }
     }
 

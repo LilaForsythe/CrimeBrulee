@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 public enum Phases {Menu, Baking, Serving, Break, TakingOrders, Closing, Groceries}
@@ -104,7 +103,30 @@ public class GlobalVariables : MonoBehaviour
     //if caught call FinishDay(Phases.Break)
     //if caught also pay fine and clear ingredients and orders
 
-    /*static void FinishDay(Phases nextPhase)
+    // Ran out of time: lose orders and ingredients, pay a fine, no baking/serving tomorrow
+    public static void GetCaught()
+    {
+        Debug.Log("Caught by the police!");
+        OrderBook.acceptedOrders.Clear();
+        IngredientStock.ClearAll();
+        PayFine();
+        FinishDay(Phases.Break);
+    }
+
+    // Collected everything: bake tomorrow (or skip to Break if no orders were taken)
+    public static void Escape()
+    {
+        Debug.Log("Got away with everything!");
+        if (OrderBook.acceptedOrders.Count > 0)
+        {
+            FinishDay(Phases.Baking);
+        }
+        else
+        {
+            FinishDay(Phases.Break);
+        }
+    }
+    public static void FinishDay(Phases nextPhase)
     {
         if(!GlobalVariables.EndDay())
         {
@@ -114,5 +136,5 @@ public class GlobalVariables : MonoBehaviour
         }
         GlobalVariables.currentPhase = nextPhase;
         SceneManager.LoadScene("pastryShopScene");
-    }*/
+    }
 }
