@@ -81,7 +81,7 @@ public class GlobalVariables : MonoBehaviour
     public static void PayFine()
     {
         timesCaught++;
-        money = Mathf.Max(0, money - CaughtFine);
+        money -= CaughtFine;
     }
 
     //called at the end of every day after the robbery
