@@ -53,7 +53,26 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            phaseText.text = "Current Phase: " + GlobalVariables.currentPhase.ToString();
+            if(phaseText != null)
+            {
+                phaseText.text = "Current Phase: " + GlobalVariables.currentPhase.ToString();
+            }
+            if (dayText != null)
+            {
+                int daysLeft = GlobalVariables.DaysUntilRent();
+                if (daysLeft == 1)
+                {
+                    dayText.text = "Day " + GlobalVariables.day + " : Rent due tonight!";
+                }
+                else
+                {
+                    dayText.text = "Day " + GlobalVariables.day + " : Rent due in " + daysLeft + " days";
+                }
+            }
+            if (moneyText != null)
+            {
+                moneyText.text = "Gold: " + GlobalVariables.money + " / " + GlobalVariables.RentDue();
+            }
         }
         if (!isTransitioning && IngredientStock.HasEverything() && GlobalVariables.currentPhase == Phases.Groceries)
         {
