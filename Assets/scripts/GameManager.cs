@@ -91,6 +91,10 @@ public class GameManager : MonoBehaviour
         }
         while (timeRemaining > 0 && timerText != null)
         {
+            if(IngredientStock.HasEverything() && GlobalVariables.currentPhase == Phases.Groceries)
+            {
+                GlobalVariables.Escape();
+            }
             timeRemaining--;
             timerText.text = "Time Remaining: " + timeRemaining;
             yield return new WaitForSeconds(1);
@@ -102,15 +106,15 @@ public class GameManager : MonoBehaviour
             Debug.Log("TIMES UP");
             //wait a couple seconds
             audio.PlayOneShot(fail2);
-            yield return new WaitForSeconds(5);
             if (backgroundMusicScript.instance == null) //if no music
             {
                 backgroundMusicScript.instance.PlayMusic(); //play
             }
-            GlobalVariables.currentPhase = Phases.Break;
+            GlobalVariables.GetCaught();
+            /*GlobalVariables.currentPhase = Phases.Break;
             IngredientStock.ClearAll(); // clear all the ingredients you have
             //need to clear all the recipes that you have as well
-            SceneManager.LoadScene("PastryShopScene");
+            SceneManager.LoadScene("PastryShopScene");*/
         }
     }
 
@@ -129,8 +133,9 @@ public class GameManager : MonoBehaviour
             {
                 backgroundMusicScript.instance.PlayMusic(); //play
             }
-            GlobalVariables.currentPhase = Phases.Baking;
-            SceneManager.LoadScene("PastryShopScene");
+            GlobalVariables.Escape();
+            /*GlobalVariables.currentPhase = Phases.Baking;
+            SceneManager.LoadScene("PastryShopScene");*/
         }
     }
 

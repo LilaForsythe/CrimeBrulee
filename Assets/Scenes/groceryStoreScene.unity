@@ -1495,6 +1495,8 @@ MonoBehaviour:
   success: {fileID: 8300000, guid: 81f0d03493e303b45bca2e141f4f2eee, type: 3}
   timerText: {fileID: 210495945}
   phaseText: {fileID: 1304589675}
+  dayText: {fileID: 0}
+  moneyText: {fileID: 0}
   clockSlider: {fileID: 332849366}
 --- !u!4 &958637865
 Transform:
@@ -1927,7 +1929,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
