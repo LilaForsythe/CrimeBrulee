@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 using System.Collections;
 using System.Text.RegularExpressions;
 using TMPro;
@@ -19,6 +20,8 @@ public class CustomerManager : MonoBehaviour
 
     [SerializeField] private GameObject acceptButton;
     [SerializeField] private GameObject denyButton;
+
+    [SerializeField] private GameObject serveButton;
 
 
     //add a thing to drag finished items to customer
@@ -75,6 +78,10 @@ public class CustomerManager : MonoBehaviour
                 SendCurrentAway();
             }
         }
+        if(phase == Phases.Serving)
+        {
+            OrderBook.acceptedOrders.Clear();
+        }
     }
 
     //spawning in customers
@@ -106,9 +113,10 @@ public class CustomerManager : MonoBehaviour
         }
         else if (GlobalVariables.currentPhase == Phases.Serving)
         {
-            if (OrderBook.acceptedOrders.Count > 0)
+            List<Order> ready = OrderBook.OrdersWithStatus(OrderStatus.Ready);
+            if(ready.Count > 0)
             {
-                SpawnCustomer(OrderBook.acceptedOrders[0]);
+                SpawnCustomer(ready[0]);
             }
             else
             {
@@ -159,7 +167,9 @@ public class CustomerManager : MonoBehaviour
         }
         else if (GlobalVariables.currentPhase == Phases.Serving)
         {
+            speechBubble.SetActive(true);
             speechText.text = "I'm here to pick up my " + RecipeName(currentCustomer.order.recipe) + "!";
+            serveButton.SetActive(true);
         }
     }
 
@@ -185,10 +195,24 @@ public class CustomerManager : MonoBehaviour
         SendCurrentAway();
     }
 
-    //code for serving recipes 
-    //Im not sure yet but i think they will be in the inventory below and you can only
-    //drag the correct one to the current customer to serve
-
+    //serving orders
+    public void ServeOrder()
+    {
+        if(currentCustomer == null || GlobalVariables.currentPhase != Phases.Serving)
+        {
+            return;
+        }
+        Order order = currentCustomer.order;
+        if(order.status != OrderStatus.Ready)
+        {
+            return;
+        }
+        int price = GlobalVariables.PriceOf(order.recipe);
+        GlobalVariables.AddMoney(price);
+        Debug.Log("Served " + RecipeName(order.recipe) + " for " + price + " gold");
+        OrderBook.acceptedOrders.Remove(order);
+        SendCurrentAway();
+    }
     void SendCurrentAway()
     {
         HideUI();
@@ -220,6 +244,10 @@ public class CustomerManager : MonoBehaviour
         if (speechBubble != null)
         {
             speechBubble.SetActive(false);
+        }
+        if(serveButton != null)
+        {
+            serveButton.SetActive(false);
         }
     }
 

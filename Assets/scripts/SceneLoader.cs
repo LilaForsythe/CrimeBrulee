@@ -8,4 +8,10 @@ public class SceneLoader : MonoBehaviour
         SceneManager.LoadScene(sceneToLoad);
     }
 
+    public void StartNewGame()
+    {
+        GlobalVariables.ResetAll();
+        SceneManager.LoadScene("pastryShopScene");
+    }
+
 }

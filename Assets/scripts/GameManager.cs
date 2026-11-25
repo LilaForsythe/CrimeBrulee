@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private AudioClip success;
     public TextMeshProUGUI timerText;
     public TextMeshProUGUI phaseText;
+    [SerializeField] private TextMeshProUGUI dayText;
+    [SerializeField] private TextMeshProUGUI moneyText;
     [SerializeField] private Slider clockSlider;
     private int totalTime = GlobalVariables.shoppingTime;
     private int timeRemaining;
