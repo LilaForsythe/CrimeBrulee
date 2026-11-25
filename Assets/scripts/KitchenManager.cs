@@ -3,7 +3,6 @@ using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine.UI;
-using UnityEditor.PackageManager.Requests;
 
 public class KitchenManager : MonoBehaviour
 {
@@ -19,6 +18,14 @@ public class KitchenManager : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI orderListText;
     [SerializeField] private TextMeshProUGUI ingredientsText;
+
+    private List<Button> orderButtons = new List<Button>();
+    private Order previewOrder;
+
+    [SerializeField] private Transform orderButtonParent;
+    [SerializeField] private Button orderButtonPrefab;
+    [SerializeField] private Button makeOrderButton;
+
     [SerializeField] private Slider mixerBar;
     [SerializeField] private Slider boardBar;
     [SerializeField] private Slider ovenBar;
@@ -89,32 +96,121 @@ public class KitchenManager : MonoBehaviour
 
     public void ClickCookbook()
     {
-        if(stage == Stage.Empty && GlobalVariables.currentPhase == Phases.Baking)
+        if(GlobalVariables.currentPhase != Phases.Baking)
         {
-            cookbookUI.SetActive(true);
-            foreach (Order order in OrderBook.acceptedOrders)
-            {
-                orderListText.text += order.recipe.ToString() + "\n";
-            }
-            //add code to select a specific order from the cookbook
+            ShowMessage("Not the time for baking");
             return;
         }
+        if(stage != Stage.Empty)
+        {
+            ShowMessage("Finish the current pastry first");
+            return;
+        }
+        OpenCookbook();
         //if in the correct stage open the cookbook
     }
 
+    void OpenCookbook()
+    {
+        cookbookUI.SetActive(true);
+        ClearOrderButtons();
+        previewOrder = null;
+        ingredientsText.text = "";
+        makeOrderButton.interactable = false;
+
+        List<Order> waiting = OrderBook.OrdersWithStatus(OrderStatus.Waiting);
+        if(waiting.Count == 0)
+        {
+            orderListText.text = "No orders to make";
+            return;
+        }
+
+        orderListText.text = "Select an order to make";
+        foreach(Order order in waiting)
+        {
+            Button button = Instantiate(orderButtonPrefab, orderButtonParent);
+            button.GetComponentInChildren<TextMeshProUGUI>().text = recipeName(order.recipe);
+
+            Order clickedOrder = order;
+            button.onClick.AddListener(() => PreviewOrder(clickedOrder));
+            orderButtons.Add(button);
+        }
+    }
+
+    void PreviewOrder(Order order)
+    {
+        previewOrder = order;
+        ingredientsText.text = recipeName(order.recipe) + "\n\nIngredients:\n" + IngredientsFor(order.recipe);
+
+        if(IngredientStock.CanBake(order.recipe))
+        {
+            makeOrderButton.interactable = true;
+        }
+        else
+        {
+            makeOrderButton.interactable = false;
+            ingredientsText.text += "\n(missing ingredients)";
+        }
+    }
+
+    public void ClickMakeOrder()
+    {
+        if(previewOrder == null)
+        {
+            return;
+        }
+        Order chosenOrder = previewOrder;
+        CloseCookbook();
+        SelectOrder(chosenOrder);
+    }
     public void CloseCookbook()
     {
         cookbookUI.SetActive(false);
+        ClearOrderButtons();
+        previewOrder = null;
         orderListText.text = "";
         ingredientsText.text = "";
-        return;
         //close the cookbook
+    }
+
+    void ClearOrderButtons()
+    {
+        foreach(Button button in orderButtons)
+        {
+            Destroy(button.gameObject);
+        }
+        orderButtons.Clear();
+    }
+    
+    string IngredientsFor(Recipes recipe)
+    {
+        string text = "";
+        foreach(Ingredients ingredient in System.Enum.GetValues(typeof(Ingredients)))
+        {
+            if(IngredientStock.AmountPerRecipe(recipe, ingredient) > 0)
+            {
+                text += recipeName(ingredient) + "\n";
+            }
+        }
+        return text;
+    }
+    
+
+    public bool HasSelectedOrder()
+    {
+        return stage == Stage.Selected && currentOrder != null;
+    }
+
+    public Recipes SelectedRecipe()
+    {
+        return currentOrder.recipe;
     }
 
     public void ClickMixer()
     {
         if(GlobalVariables.currentPhase != Phases.Baking)
         {
+            ShowMessage("Not the time for baking");
             return;
         }
         if(stage == Stage.Selected)
@@ -152,6 +248,7 @@ public class KitchenManager : MonoBehaviour
     {
         if(GlobalVariables.currentPhase != Phases.Baking)
         {
+            ShowMessage("Not the time for baking");
             return;
         }
         if(stage == Stage.Mixed)
@@ -182,6 +279,11 @@ public class KitchenManager : MonoBehaviour
 
     public void ClickOven()
     {
+        if(GlobalVariables.currentPhase != Phases.Baking)
+        {
+            ShowMessage("Not the time for baking");
+            return;
+        }
         if(stage == Stage.Shaped)
         {
             stage = Stage.Baking;
@@ -258,7 +360,7 @@ public class KitchenManager : MonoBehaviour
         switch(stage)
         {
             case Stage.Selected:
-                return "Click the mixer to begin mixing";
+                return "Drag ingredients into mixer";
             case Stage.Mixing:
                 return "Continue clicking to mix";
             case Stage.Mixed:
@@ -276,7 +378,7 @@ public class KitchenManager : MonoBehaviour
                 {
                     return "Click the cookbook to pick an order";
                 }
-                return "All orders are done and can be served";
+                return "No orders to make";
         }
     }
 
