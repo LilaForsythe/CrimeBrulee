@@ -1242,6 +1242,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 976704252}
   m_CullTransparentMesh: 1
+--- !u!1 &985875147
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 985875148}
+  - component: {fileID: 985875149}
+  m_Layer: 0
+  m_Name: globalVariables
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &985875148
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 985875147}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.04533, y: 0.56727, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &985875149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 985875147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75f4f74ddb1c87945a70863a46a13251, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GlobalVariables
 --- !u!1 &1064234799
 GameObject:
   m_ObjectHideFlags: 0
@@ -2566,11 +2610,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86118c107a888894c9d72265cc2e1f83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  totalCollectibles: 5
+  audio: {fileID: 0}
+  fail1: {fileID: 0}
+  fail2: {fileID: 0}
+  success: {fileID: 0}
   timerText: {fileID: 0}
   phaseText: {fileID: 1581134733}
   clockSlider: {fileID: 0}
-  totalTime: 10
 --- !u!4 &1829992180
 Transform:
   m_ObjectHideFlags: 0
@@ -2877,3 +2923,4 @@ SceneRoots:
   - {fileID: 973910703}
   - {fileID: 708004468}
   - {fileID: 530235018}
+  - {fileID: 985875148}

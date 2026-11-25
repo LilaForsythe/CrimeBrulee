@@ -57,6 +57,7 @@ public static class IngredientStock
                 return false;
             }
         }
+        
         return true;
     }
 
@@ -68,6 +69,7 @@ public static class IngredientStock
             return false;
         }
         owned[(int)ingredient] += 1;
+        ShoppingListText(); //this fixes the display
         return true;
     }
 
