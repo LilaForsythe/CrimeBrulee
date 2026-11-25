@@ -20,7 +20,7 @@ public class ingredientScript : MonoBehaviour
             {
                 choosePickUpSound(); //play the sound again
                 respawnIngredient(); //ceck if needed again
-                Destroy(gameObject); //destroy the ingredient object
+                //Destroy(gameObject); //destroy the ingredient object
 
             }
         }
@@ -30,7 +30,7 @@ public class ingredientScript : MonoBehaviour
     public void respawnIngredient()
     {
         if (IngredientStock.Needed(ingredient) > IngredientStock.Owned(ingredient))
-        {
+        {   
             gameObject.SetActive(true);
             randomLocation();
         }

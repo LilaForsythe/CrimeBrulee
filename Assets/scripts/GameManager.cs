@@ -128,7 +128,7 @@ public class GameManager : MonoBehaviour
             {
                 audio.PlayOneShot(success); //play the success soundA
             }
-            yield return new WaitForSeconds(5);
+            yield return new WaitForSeconds(2);
             if (backgroundMusicScript.instance == null) //if no music
             {
                 backgroundMusicScript.instance.PlayMusic(); //play
