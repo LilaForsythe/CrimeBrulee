@@ -83,7 +83,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("TIMES UP");
             //wait a couple seconds
             audio.PlayOneShot(fail2);
-            yield return new WaitForSeconds(5);
+            yield return new WaitForSeconds(2);
             if (backgroundMusicScript.instance == null) //if no music
             {
                 backgroundMusicScript.instance.PlayMusic(); //play
@@ -105,7 +105,7 @@ public class GameManager : MonoBehaviour
             {
                 audio.PlayOneShot(success); //play the success soundA
             }
-            yield return new WaitForSeconds(5);
+            yield return new WaitForSeconds(2);
             if (backgroundMusicScript.instance == null) //if no music
             {
                 backgroundMusicScript.instance.PlayMusic(); //play

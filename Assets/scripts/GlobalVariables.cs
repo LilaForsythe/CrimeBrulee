@@ -34,10 +34,10 @@ public class GlobalVariables : MonoBehaviour
     //upgradables
     [SerializeField] public static int shoppingTime = 10;
     [SerializeField] public static int playerSpeed = 10;
-    [SerializeField] public static int multiplierChance = 1;
+    [SerializeField] public static float multiplierChance = 1;
 
     public static readonly int[,] recipeIngredients = {
-        //Fruit tart, Croissant, Chocolate Croissant, Berry Envelope, Berry Strudel, Eclair, Palmier, Cinnnamon Roll, Chocolate Chip Cookies, Vanilla Cake
+        //Fruit tart, Croissant, Chocolate Croissant, Berry Envelope, Berry Strudel, Eclair, Palmier, Cinnamon Roll, Chocolate Chip Cookies, Vanilla Cake
         {1, 0, 0, 1, 1, 0, 0, 0, 0, 0}, //Mixed Berries
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 0}, //Butter
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, //Flour
