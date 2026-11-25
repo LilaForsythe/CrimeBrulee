@@ -364,7 +364,7 @@ public class KitchenManager : MonoBehaviour
         switch(stage)
         {
             case Stage.Selected:
-                return "Drag ingredients into mixer";
+                return "Drag ingredients into mixer or click to start";
             case Stage.Mixing:
                 return "Continue clicking to mix";
             case Stage.Mixed:
