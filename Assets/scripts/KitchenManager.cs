@@ -26,6 +26,8 @@ public class KitchenManager : MonoBehaviour
     [SerializeField] private Button orderButtonPrefab;
     [SerializeField] private Button makeOrderButton;
 
+    [SerializeField] private Button closeBookButton;
+
     [SerializeField] private Slider mixerBar;
     [SerializeField] private Slider boardBar;
     [SerializeField] private Slider ovenBar;
@@ -49,6 +51,7 @@ public class KitchenManager : MonoBehaviour
     void Start()
     {
         cookbookUI.SetActive(false);
+        closeBookButton.interactable = false;
         ingredientsText.text = "";
         orderListText.text = "";
         ResetBars();
@@ -117,6 +120,7 @@ public class KitchenManager : MonoBehaviour
         previewOrder = null;
         ingredientsText.text = "";
         makeOrderButton.interactable = false;
+        closeBookButton.interactable = true;
 
         List<Order> waiting = OrderBook.OrdersWithStatus(OrderStatus.Waiting);
         if(waiting.Count == 0)
