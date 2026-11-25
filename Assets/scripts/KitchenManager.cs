@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine.UI;
+using UnityEditor.PackageManager.Requests;
 
 public class KitchenManager : MonoBehaviour
 {
@@ -43,24 +44,52 @@ public class KitchenManager : MonoBehaviour
         cookbookUI.SetActive(false);
         ingredientsText.text = "";
         orderListText.text = "";
+        ResetBars();
     }
 
     // Update is called once per frame
     void Update()
     {
         //updating the timer for the oven
+        if (stage == Stage.Baking)
+        {
+            ovenTimer += Time.deltaTime;
+            ovenBar.value = Mathf.Clamp01(ovenTimer / bakeTime);
+            if (ovenTimer >= bakeTime)
+            {
+                stage = Stage.Baked;
+            }
+        }
+
+        if (messageTimer > 0f)
+        {
+            messageTimer -= Time.deltaTime;
+        }
+        UpdateTexts();
     }
 
     void OnDestroy()
     {
         //if kitchen scene is left mid bake return items to player
+        if (currentOrder == null)
+        {
+            return;
+        }
+        if (stage == Stage.Baked)
+        {
+            OrderBook.FinishOrder(currentOrder); 
+        }
+        else if (stage != Stage.Empty && stage != Stage.Selected)
+        {
+            OrderBook.CancelOrder(currentOrder);
+        }
     }
 
     //buttons
 
     public void ClickCookbook()
     {
-        if(stage == Stage.Empty)
+        if(stage == Stage.Empty && GlobalVariables.currentPhase == Phases.Baking)
         {
             cookbookUI.SetActive(true);
             foreach (Order order in OrderBook.acceptedOrders)
@@ -84,16 +113,24 @@ public class KitchenManager : MonoBehaviour
 
     public void ClickMixer()
     {
+        if(GlobalVariables.currentPhase != Phases.Baking)
+        {
+            return;
+        }
         if(stage == Stage.Selected)
         {
+            if(!OrderBook.StartOrder(currentOrder))
+            {
+                ShowMessage("Couldn't start order");
+                return;
+            }
             stage = Stage.Mixing;
             clicks = 0;
             mixerBar.value = 0f;
-            return;
         }
         if(stage != Stage.Mixing)
         {
-            message = "no order selected";
+            ShowMessage("Not ready to be mixed");
             return;
         }
         clicks ++;
@@ -102,7 +139,7 @@ public class KitchenManager : MonoBehaviour
         if(clicks >= clicksToMix)
         {
             stage = Stage.Mixed;
-            message = "order mixed";
+            ShowMessage("Order mixed");
             return;
         }
         //if in selected stage change to mixing stage
@@ -113,16 +150,19 @@ public class KitchenManager : MonoBehaviour
 
     public void ClickBoard()
     {
+        if(GlobalVariables.currentPhase != Phases.Baking)
+        {
+            return;
+        }
         if(stage == Stage.Mixed)
         {
             stage = Stage.Shaping;
             clicks = 0;
             boardBar.value = 0f;
-            return;
         }
         if(stage != Stage.Shaping)
         {
-            message = "order not ready to shape";
+            ShowMessage("order not ready to shape");
             return;
         }
         clicks++;
@@ -131,7 +171,7 @@ public class KitchenManager : MonoBehaviour
         if(clicks >= clicksToShape)
         {
             stage = Stage.Shaped;
-            message = "order shaped";
+            ShowMessage("Order shaped");
             return;
         }
         //if in mixed move to shaping
@@ -151,15 +191,19 @@ public class KitchenManager : MonoBehaviour
         }
         if(stage == Stage.Baking)
         {
-            message = "order is still baking";
+            ShowMessage("order is still baking");
             return;
         }
         if(stage == Stage.Baked)
         {
+            OrderBook.FinishOrder(currentOrder);
+            ShowMessage(recipeName(currentOrder.recipe) + " is on the rack!");
+            currentOrder = null;
             stage = Stage.Empty;
-            message = "order baked and ready to continue";
+            ResetBars();
             return;
         }
+        ShowMessage("Not ready to bake");
         //if in shaped move to baking
         //if in baking send message
         //if stage is baked send message and change stage to empty
@@ -169,21 +213,19 @@ public class KitchenManager : MonoBehaviour
     {
         if(stage != Stage.Empty)
         {
-            message = "order already selected or in progress";
+            ShowMessage("order already selected or in progress");
             return;
         }
         if(!IngredientStock.CanBake(order.recipe))
         {
-            message = "you do not have the ingredients for this order";
+            ShowMessage("you do not have the ingredients for this order");
             return;
         }
         currentOrder = order;
         stage = Stage.Selected;
         clicks = 0;
-        mixerBar.value = 0f;
-        boardBar.value = 0f;
-        ovenBar.value = 0f;
-        message = "order selected";
+        ResetBars();
+        ShowMessage("order selected");
         //if not can bake send message
         //else set current order to order
         //change stage to selected
@@ -191,4 +233,82 @@ public class KitchenManager : MonoBehaviour
     }
 
     //functions for messages and instructions
+
+    void UpdateTexts()
+    {
+        if(instructionText != null)
+        {
+            if(messageTimer > 0f)
+            {
+                instructionText.text = message;
+            }
+            else
+            {
+                instructionText.text = NextStepText();
+            }
+        }
+        if(rackText != null)
+        {
+            rackText.text = RackText();
+        }
+    }
+
+    string NextStepText()
+    {
+        switch(stage)
+        {
+            case Stage.Selected:
+                return "Click the mixer to begin mixing";
+            case Stage.Mixing:
+                return "Continue clicking to mix";
+            case Stage.Mixed:
+                return "Click the pastry board to shape the pastry";
+            case Stage.Shaping:
+                return "Continue clicking to shape";
+            case Stage.Shaped:
+                return "Click the oven to bake it";
+            case Stage.Baking:
+                return "Baking the " + recipeName(currentOrder.recipe);
+            case Stage.Baked:
+                return "The " + recipeName(currentOrder.recipe) + " is done! Click the oven to take it out";
+            default:
+                if(OrderBook.OrdersWithStatus(OrderStatus.Waiting).Count > 0)
+                {
+                    return "Click the cookbook to pick an order";
+                }
+                return "All orders are done and can be served";
+        }
+    }
+
+    string RackText()
+    {
+        List<Order> ready = OrderBook.OrdersWithStatus(OrderStatus.Ready);
+        string text = "Rack: \n";
+        if(ready.Count == 0)
+        {
+            text+= "(empty)";
+        }
+        foreach(Order order in ready)
+        {
+            text += recipeName(order.recipe) + "\n";
+        }
+        return text;
+    }
+    void ShowMessage(string newMessage)
+    {
+        message = newMessage;
+        messageTimer = 2f;
+    }
+
+    void ResetBars()
+    {
+        mixerBar.value = 0f;
+        boardBar.value = 0f;
+        ovenBar.value = 0f;
+    }
+
+    public static string recipeName(System.Enum value)
+    {
+        return Regex.Replace(value.ToString(), "(\\B[A-Z])", " $1");
+    }
 }
